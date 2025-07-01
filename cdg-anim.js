@@ -22,14 +22,14 @@ $(document).ready(function() {
     });
   }
 
-  $('[data-cdg-anim="in-view"]').each(function() {
+  $('[data-cdg-anim-inview]').each(function() {
     let element = $(this);
     ScrollTrigger.create({
       trigger: element,
       start: "top 75%",
       end: "bottom 25%",
       onEnter: function() {
-        $(element).removeAttr('data-cdg-anim');
+        $(element).removeAttr('data-cdg-anim-inview');
       },
       once: true
     });
