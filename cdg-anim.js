@@ -1,38 +1,92 @@
 $(document).ready(function() {
-function isNotChromium() {
-  const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-  const isEdge = /Edg/.test(navigator.userAgent);
-  const isOpera = /OPR/.test(navigator.userAgent);
-  return !(isChrome || isEdge || isOpera);
-}
 
-if (isNotChromium()) {
-  $('[data-cdg-anim-stagger]').each(function() {
+  //Text Split Animation
+  $('[data-cdg-text-split]').each(function() {
     let element = $(this);
   
-    // Get the actual computed value of the CSS custom property
-    const staggerValue = getComputedStyle(this).getPropertyValue('--_animations---stagger').trim();
-    const staggerDelay = parseFloat(staggerValue) || 0.2; // fallback to 0.2 if not found
+    // Get the split type (chars, lines, or words)
+    let attributeValue = element.attr('data-cdg-text-split');
+    let splitType = 'chars'; // default
   
+    if (attributeValue && attributeValue.trim() !== '') {
+      splitType = attributeValue.trim();
+    }
+  
+    // Find the animation class that starts with "anim-"
+    const classList = this.className.split(' ');
+    const animClass = classList.find(className => className.startsWith('anim-'));
+  
+    if (animClass) {
+      // Remove the animation class from the original element
+      element.removeClass(animClass);
+    
+      // Create SplitType instance
+      const splitText = new SplitType(this, {
+        types: splitType
+      });
+    
+      // Add the animation class to the split elements
+      switch(splitType) {
+        case 'chars':
+          $(splitText.chars).addClass(animClass);
+          break;
+        case 'lines':
+          $(splitText.lines).addClass(animClass);
+          break;
+        case 'words':
+          $(splitText.words).addClass(animClass);
+          break;
+        default:
+          $(splitText.chars).addClass(animClass); // fallback to chars
+      }
+    }
+  });
+
+
+  //Stagger Animations
+  $('[data-cdg-anim-stagger]').each(function() {
+    let element = $(this);
+    let staggerDelay;
+
+    // Check if data-cdg-anim-stagger has a value
+    let attributeValue = element.attr('data-cdg-anim-stagger');
+  
+    if (attributeValue && attributeValue.trim() !== '') {
+      // Use the attribute value as stagger amount
+      staggerDelay = parseFloat(attributeValue.trim());
+    } else {
+      const staggerValue = getComputedStyle(this).getPropertyValue('--_animations---stagger').trim();
+      staggerDelay = parseFloat(staggerValue);
+    }
+
     element.children().each(function(index) {
-      // Do the math in JavaScript and set the final computed value with !important
       const delay = index * staggerDelay;
       this.style.setProperty('animation-delay', `${delay}s`, 'important');
     });
   });
-}
 
 
+  //Scroll into view
   $('[data-cdg-anim-inview]').each(function() {
     let element = $(this);
+  
+    // Get the attribute value or use defaults
+    let attributeValue = element.attr('data-cdg-anim-inview');
+    let offset = '75%';
+  
+    // If there's a specific value in the attribute, use it offset
+    if (attributeValue && attributeValue.trim() !== '') {
+      offset = attributeValue.trim();
+    }
+  
     ScrollTrigger.create({
       trigger: element,
-      start: "top 75%",
-      end: "bottom 25%",
+      start: `top ${offset}`,
       onEnter: function() {
         $(element).removeAttr('data-cdg-anim-inview');
       },
       once: true
     });
   });
+  
 });
