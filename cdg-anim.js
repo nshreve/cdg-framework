@@ -1,30 +1,30 @@
 $(document).ready(function() {
 
-  //Text Split Animation
+  //Text Split Animation with GSAP SplitText
   $('[data-cdg-text-split]').each(function() {
     let element = $(this);
-  
+
     // Get the split type (chars, lines, or words)
     let attributeValue = element.attr('data-cdg-text-split');
     let splitType = 'chars'; // default
-  
+
     if (attributeValue && attributeValue.trim() !== '') {
       splitType = attributeValue.trim();
     }
-  
+
     // Find the animation class that starts with "anim-"
     const classList = this.className.split(' ');
     const animClass = classList.find(className => className.startsWith('anim-'));
-  
+
     if (animClass) {
       // Remove the animation class from the original element
       element.removeClass(animClass);
-    
-      // Create SplitType instance
-      const splitText = new SplitType(this, {
-        types: splitType
+  
+      // Create GSAP SplitText instance
+      const splitText = new SplitText(this, {
+        type: splitType
       });
-    
+  
       // Add the animation class to the split elements
       switch(splitType) {
         case 'chars':
