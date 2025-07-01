@@ -1,0 +1,6 @@
+/* ANIMATION CONFIG */
+[data-cdg-anim='in-view'],
+[data-cdg-anim='in-view'] * {
+    animation-play-state: paused;
+    opacity: 0;
+}
