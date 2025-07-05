@@ -88,5 +88,7 @@ $(document).ready(function() {
       once: true
     });
   });
+
+  ScrollTrigger.refresh();
   
 });
