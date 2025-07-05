@@ -6,7 +6,7 @@ $(document).ready(function() {
 
     // Get the split type (chars, lines, or words)
     let attributeValue = element.attr('data-cdg-text-split');
-    let splitType = 'chars'; // default
+    let splitType = 'words, chars'; // default
 
     if (attributeValue && attributeValue.trim() !== '') {
       splitType = attributeValue.trim();
