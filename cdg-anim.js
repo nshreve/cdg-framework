@@ -6,7 +6,7 @@ $('[data-cdg-text-split]').each(function() {
 
   // Get the split type (chars, lines, or words)
   let attributeValue = element.attr('data-cdg-text-split');
-  let splitType = 'words, chars'; // default
+  let splitType = 'chars'; // default
 
   if (attributeValue && attributeValue.trim() !== '') {
     splitType = attributeValue.trim();
@@ -22,7 +22,11 @@ $('[data-cdg-text-split]').each(function() {
 
     // Create GSAP SplitText instance
     const splitText = new SplitText(this, {
-      type: splitType
+      type: splitType,
+      charsClass: "char",
+      wordsClass: "word",
+      linesClass: "line",
+      smartWrap: true
     });
 
     // Add the animation class to the split elements
@@ -43,38 +47,31 @@ $('[data-cdg-text-split]').each(function() {
 
   //Stagger Animations
 $('[data-cdg-anim-stagger]').each(function() {
-  let element = $(this);
-  let staggerDelay;
+let element = $(this);
+let staggerDelay;
+ // Check if data-cdg-anim-stagger has a value
+let attributeValue = element.attr('data-cdg-anim-stagger');
 
-  // Check if data-cdg-anim-stagger has a value
-  let attributeValue = element.attr('data-cdg-anim-stagger');
+if (attributeValue && attributeValue.trim() !== '') {
+  // Use the attribute value as stagger amount
+  staggerDelay = parseFloat(attributeValue.trim());
+} else {
+  const staggerValue = getComputedStyle(this).getPropertyValue('--_animations---stagger').trim();
+  staggerDelay = parseFloat(staggerValue);
+}
 
-  if (attributeValue && attributeValue.trim() !== '') {
-    // Use the attribute value as stagger amount
-    staggerDelay = parseFloat(attributeValue.trim());
-  } else {
-    const staggerValue = getComputedStyle(this).getPropertyValue('--_animations---stagger').trim();
-    staggerDelay = parseFloat(staggerValue);
-  }
-
-  // Check if this element has char elements (from SplitText)
-  let targetElements = element.find('.char');
+element.children().each(function(index) {
+  const delay = index * staggerDelay;
   
-  // If no char elements found, check for word elements
-  if (targetElements.length === 0) {
-    targetElements = element.find('.word');
-  }
-  
-  // If no word elements found, fall back to direct children
-  if (targetElements.length === 0) {
-    targetElements = element.children();
-  }
-
-  targetElements.each(function(index) {
-    const delay = index * staggerDelay;
-    this.style.setProperty('animation-delay', `${delay}s`, 'important');
-  });
+  // If it's a span, try to find a div inside it, otherwise use the element itself
+  const targetElement = this.tagName.toLowerCase() === 'span' 
+    ? this.querySelector('div') || this 
+    : this;
+    
+  targetElement.style.setProperty('animation-delay', `${delay}s`, 'important');
 });
+
+ });
 
 
 
