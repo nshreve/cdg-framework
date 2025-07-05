@@ -1,46 +1,44 @@
 $(document).ready(function() {
 
-  //Text Split Animation with GSAP SplitText
-  $('[data-cdg-text-split]').each(function() {
-    let element = $(this);
+  // Text Split Animation with GSAP SplitText
+$('[data-cdg-text-split]').each(function() {
+  let element = $(this);
 
-    // Get the split type (chars, lines, or words)
-    let attributeValue = element.attr('data-cdg-text-split');
-    let splitType = 'words, chars'; // default
+  // Get the split type (chars, lines, or words)
+  let attributeValue = element.attr('data-cdg-text-split');
+  let splitType = 'words, chars'; // default
 
-    if (attributeValue && attributeValue.trim() !== '') {
-      splitType = attributeValue.trim();
+  if (attributeValue && attributeValue.trim() !== '') {
+    splitType = attributeValue.trim();
+  }
+
+  // Find the animation class that starts with "anim-"
+  const classList = this.className.split(' ');
+  const animClass = classList.find(className => className.startsWith('anim-'));
+
+  if (animClass) {
+    // Remove the animation class from the original element
+    element.removeClass(animClass);
+
+    // Create GSAP SplitText instance
+    const splitText = new SplitText(this, {
+      type: splitType
+    });
+
+    // Add the animation class to the split elements
+    if (splitType.includes('chars')) {
+      // If 'chars' is included, only apply animation to chars
+      $(splitText.chars).addClass(animClass);
+    } else if (splitType.includes('words')) {
+      // If no 'chars' but has 'words', apply to words
+      $(splitText.words).addClass(animClass);
+    } else if (splitType.includes('lines')) {
+      // If neither 'chars' nor 'words', but has 'lines', apply to lines
+      $(splitText.lines).addClass(animClass);
     }
+  }
+});
 
-    // Find the animation class that starts with "anim-"
-    const classList = this.className.split(' ');
-    const animClass = classList.find(className => className.startsWith('anim-'));
-
-    if (animClass) {
-      // Remove the animation class from the original element
-      element.removeClass(animClass);
-  
-      // Create GSAP SplitText instance
-      const splitText = new SplitText(this, {
-        type: splitType
-      });
-  
-      // Add the animation class to the split elements
-      switch(splitType) {
-        case 'chars':
-          $(splitText.chars).addClass(animClass);
-          break;
-        case 'lines':
-          $(splitText.lines).addClass(animClass);
-          break;
-        case 'words':
-          $(splitText.words).addClass(animClass);
-          break;
-        default:
-          $(splitText.chars).addClass(animClass); // fallback to chars
-      }
-    }
-  });
 
 
   //Stagger Animations
