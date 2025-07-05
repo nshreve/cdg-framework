@@ -60,16 +60,24 @@ if (attributeValue && attributeValue.trim() !== '') {
   staggerDelay = parseFloat(staggerValue);
 }
 
-element.children().each(function(index) {
-  const delay = index * staggerDelay;
-  
-  // If it's a span, try to find a div inside it, otherwise use the element itself
-  const targetElement = this.tagName.toLowerCase() === 'span' 
-    ? this.querySelector('div') || this 
-    : this;
-    
-  targetElement.style.setProperty('animation-delay', `${delay}s`, 'important');
+let delayIndex = 0;
+
+element.children().each(function() {
+  if (this.tagName.toLowerCase() === 'span') {
+    // For spans, find all divs inside and apply delays to those
+    $(this).find('div').each(function() {
+      const delay = delayIndex * staggerDelay;
+      this.style.setProperty('animation-delay', `${delay}s`, 'important');
+      delayIndex++;
+    });
+  } else {
+    // For non-span children, apply delay directly
+    const delay = delayIndex * staggerDelay;
+    this.style.setProperty('animation-delay', `${delay}s`, 'important');
+    delayIndex++;
+  }
 });
+
 
  });
 
