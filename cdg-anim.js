@@ -42,26 +42,40 @@ $('[data-cdg-text-split]').each(function() {
 
 
   //Stagger Animations
-  $('[data-cdg-anim-stagger]').each(function() {
-    let element = $(this);
-    let staggerDelay;
+$('[data-cdg-anim-stagger]').each(function() {
+  let element = $(this);
+  let staggerDelay;
 
-    // Check if data-cdg-anim-stagger has a value
-    let attributeValue = element.attr('data-cdg-anim-stagger');
+  // Check if data-cdg-anim-stagger has a value
+  let attributeValue = element.attr('data-cdg-anim-stagger');
+
+  if (attributeValue && attributeValue.trim() !== '') {
+    // Use the attribute value as stagger amount
+    staggerDelay = parseFloat(attributeValue.trim());
+  } else {
+    const staggerValue = getComputedStyle(this).getPropertyValue('--_animations---stagger').trim();
+    staggerDelay = parseFloat(staggerValue);
+  }
+
+  // Check if this element has char elements (from SplitText)
+  let targetElements = element.find('.char');
   
-    if (attributeValue && attributeValue.trim() !== '') {
-      // Use the attribute value as stagger amount
-      staggerDelay = parseFloat(attributeValue.trim());
-    } else {
-      const staggerValue = getComputedStyle(this).getPropertyValue('--_animations---stagger').trim();
-      staggerDelay = parseFloat(staggerValue);
-    }
+  // If no char elements found, check for word elements
+  if (targetElements.length === 0) {
+    targetElements = element.find('.word');
+  }
+  
+  // If no word elements found, fall back to direct children
+  if (targetElements.length === 0) {
+    targetElements = element.children();
+  }
 
-    element.children().each(function(index) {
-      const delay = index * staggerDelay;
-      this.style.setProperty('animation-delay', `${delay}s`, 'important');
-    });
+  targetElements.each(function(index) {
+    const delay = index * staggerDelay;
+    this.style.setProperty('animation-delay', `${delay}s`, 'important');
   });
+});
+
 
 
   //Scroll into view
