@@ -1,0 +1,9 @@
+[data-cdg-accordion="content"] {
+	grid-template-rows: 0fr;
+}
+[data-cdg-accordion="item"]:has([data-cdg-accordion="checkbox"]:checked) [data-cdg-accordion="content"] {
+	grid-template-rows: 1fr;
+}
+[data-cdg-accordion="item"]:has([data-cdg-accordion="checkbox"]:checked) [data-cdg-accordion="icon"] {
+	transform: rotate(var(--icon-rotation, 45deg);
+}
