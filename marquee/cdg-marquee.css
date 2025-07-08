@@ -1,0 +1,3 @@
+[data-cdg-marquee="component"]:not(.ready) [data-cdg-marquee="group"] {
+    animation: none !important;
+}
