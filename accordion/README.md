@@ -1,7 +1,7 @@
 # CDG Accordion
 This accordion uses CSS only. Here's how to set it up.
 
-1. Add the `cdg-accordion.css` to the <head> of the page.
+1. Add the `cdg-accordion.css` to the `<head>` of the page.
 2. Apply `[data-cdg-accordion="item"]` to the outer wrapper of each accordion item.
 3. Add an absolute checkbox to the trigger area and give it `[data-cdg-accordion="checkbox"]`.
 4. Add `[data-cdg-accordion="content"]` to the content wrapper, set to grid.
