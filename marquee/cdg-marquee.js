@@ -5,38 +5,36 @@ function duplicateMarqueeGroups() {
         
         if ($originalGroup.length === 0) return;
         
-        // Get dimensions
+        $component.removeClass('ready');
+        
         const componentWidth = $component.width();
         const groupWidth = $originalGroup.outerWidth(true);
         
-        if (groupWidth === 0) return; // Skip if group has no width
+        if (groupWidth === 0) return;
         
-        // Calculate groups needed for component width + at least one group overflow
         const targetWidth = componentWidth + groupWidth;
         const groupsNeeded = Math.ceil(targetWidth / groupWidth);
         
-        // Get current group count
         const currentGroups = $component.find('[data-cdg-marquee="group"]').length;
         
-        // Only modify if count has changed
         if (currentGroups !== groupsNeeded) {
-            // Remove all except original
             $component.find('[data-cdg-marquee="group"]').not(':first').remove();
             
-            // Add required duplicates
             for (let i = 1; i < groupsNeeded; i++) {
                 $originalGroup.clone().insertAfter(
                     $component.find('[data-cdg-marquee="group"]').last()
                 );
             }
         }
+        
+        setTimeout(() => {
+            $component.addClass('ready');
+        }, 50);
     });
 }
 
-// Initialize
 $(document).ready(duplicateMarqueeGroups);
 
-// Debounced resize handler
 let resizeTimeout;
 $(window).on('resize', function() {
     clearTimeout(resizeTimeout);
