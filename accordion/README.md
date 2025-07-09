@@ -8,3 +8,10 @@ This accordion uses CSS only. Here's how to set it up.
 5. Add `[data-cdg-accordion="icon"]` to the icon.
 
 **Optional:** Add a style of `--icon-rotation: Xdeg;` to the `[data-cdg-accordion="item"]` element to set a different rotation amount for the icon.
+
+## CDN Links
+#### CSS (In `<head>`)
+```
+<!-- CDG ACCORDION CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.0.0/accordion/cdg-accordion.min.css">
+```
