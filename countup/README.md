@@ -19,6 +19,6 @@ CDG Countup is a customized version of [CountUp.js](https://inorganik.github.io/
 ## CDN Links
 #### JS (Before `</body>`)
 ```
-<!-- CDG MARQUEE JS -->
+<!-- CDG Count Up JS -->
 <script src="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.0/countup/cdg-countup.min.js"></script>
 ```
