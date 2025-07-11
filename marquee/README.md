@@ -12,10 +12,10 @@ This marquee uses CSS and JS. Here's how to set it up.
 #### CSS (In `<head>`)
 ```
 <!-- CDG MARQUEE CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.0.0/marquee/cdg-marquee.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.0/marquee/cdg-marquee.min.css">
 ```
 #### JS (Before `</body>`)
 ```
 <!-- CDG MARQUEE JS -->
-<script src="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.0.0/marquee/cdg-marquee.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.0/marquee/cdg-marquee.min.js"></script>
 ```
