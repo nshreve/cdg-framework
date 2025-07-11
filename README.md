@@ -39,4 +39,3 @@ The CDG Framework is a set of components and systems used by CDG. Built by Noah 
 <!-- CDG Count Up JS -->
 <script src="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.0/countup/cdg-countup.min.js"></script>
 ```
-```
