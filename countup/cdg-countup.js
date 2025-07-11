@@ -306,18 +306,46 @@ class CountUp {
   
   handleScroll() {
     if (!this.once && window) {
-      const windowBottom = window.innerHeight + window.scrollY;
+      const windowHeight = window.innerHeight;
+      const scrollY = window.scrollY;
       const rect = this.el.getBoundingClientRect();
-      const elementTop = rect.top + window.pageYOffset;
-      const elementBottom = rect.top + rect.height + window.pageYOffset;
+      const elementTop = rect.top + scrollY;
+      const elementBottom = elementTop + rect.height;
       
-      if (elementBottom < windowBottom && elementBottom > window.scrollY && this.paused) {
+      let shouldTrigger = false;
+      
+      // Calculate trigger point based on unit type
+      if (this.options.scrollUnit === 'percent' || this.options.scrollUnit === 'vh') {
+        // Percentage or viewport height based
+        const threshold = this.options.scrollThreshold || 0.75;
+        const triggerPoint = windowHeight * threshold;
+        const viewportTriggerPosition = scrollY + triggerPoint;
+        shouldTrigger = elementTop <= viewportTriggerPosition;
+        
+      } else if (this.options.scrollUnit === 'rem' || this.options.scrollUnit === 'px') {
+        // Pixel/rem offset based
+        const offset = this.options.scrollOffset || 0;
+        const viewportBottom = scrollY + windowHeight;
+        shouldTrigger = viewportBottom >= (elementTop + offset);
+        
+      } else {
+        // Fallback to default behavior
+        const threshold = this.options.scrollThreshold || 0.75;
+        const triggerPoint = windowHeight * threshold;
+        const viewportTriggerPosition = scrollY + triggerPoint;
+        shouldTrigger = elementTop <= viewportTriggerPosition;
+      }
+      
+      // Check if element should start animation
+      if (shouldTrigger && this.paused) {
         this.paused = false;
-        setTimeout(() => this.start(), this.options.scrollSpyDelay);
+        setTimeout(() => this.start(), this.options.scrollSpyDelay || 0);
         if (this.options.scrollSpyOnce) {
           this.once = true;
         }
-      } else if ((window.scrollY > elementBottom || elementTop > windowBottom) && !this.paused) {
+      }
+      // Reset logic (optional - only if scrollSpyOnce is false)
+      else if (!shouldTrigger && !this.paused && !this.options.scrollSpyOnce) {
         this.reset();
       }
     }
@@ -371,10 +399,12 @@ class CountUpAutoInit {
       const counter = new CountUp(element, targetValue, config);
       this.counters.set(element, counter);
       
-      // Start the animation
-      counter.start();
+      // Start the animation (unless scroll spy is enabled)
+      if (!config.enableScrollSpy) {
+        counter.start();
+      }
       
-      console.log(`CountUp initialized for element with target: ${targetValue}, start: ${startValue}`);
+      console.log(`CountUp initialized for element with target: ${targetValue}, start: ${startValue}, scrollSpy: ${config.enableScrollSpy}`);
       
     } catch (error) {
       console.error('Error initializing CountUp for element:', element, error);
@@ -457,13 +487,79 @@ class CountUpAutoInit {
       config.useGrouping = useGrouping !== 'false';
     }
     
-    // Scroll spy
-    const scrollSpy = element.getAttribute('data-cdg-countup-scroll');
-    if (scrollSpy !== null) {
-      config.enableScrollSpy = scrollSpy !== 'false';
-      config.scrollSpyOnce = true; // Default to once for auto-init
+    // In-view scroll spy configuration
+    const inView = element.getAttribute('data-cdg-countup-inview');
+    if (inView !== null) {
+      config.enableScrollSpy = true;
+      config.scrollSpyOnce = true;
+      
+      // Parse the in-view value
+      const inViewConfig = this.parseInViewValue(inView);
+      config.scrollThreshold = inViewConfig.threshold;
+      config.scrollOffset = inViewConfig.offset;
+      config.scrollUnit = inViewConfig.unit;
+    } else {
+      // Disabled by default
+      config.enableScrollSpy = false;
     }
     
+    return config;
+  }
+  
+  // Parse in-view value method
+  parseInViewValue(value) {
+    const config = {
+      threshold: 0.75, // Default 75%
+      offset: 0,
+      unit: 'percent'
+    };
+    
+    // If empty string or just "true", use default
+    if (value === '' || value === 'true') {
+      return config;
+    }
+    
+    // Parse percentage values (e.g., "25%", "50%")
+    const percentMatch = value.match(/^(\d+(?:\.\d+)?)%$/);
+    if (percentMatch) {
+      const percent = parseFloat(percentMatch[1]);
+      if (percent >= 0 && percent <= 100) {
+        config.threshold = percent / 100;
+        config.unit = 'percent';
+      }
+      return config;
+    }
+    
+    // Parse rem values (e.g., "5rem", "2.5rem")
+    const remMatch = value.match(/^(\d+(?:\.\d+)?)rem$/);
+    if (remMatch) {
+      const remValue = parseFloat(remMatch[1]);
+      config.offset = remValue * 16; // Convert rem to pixels (assuming 16px = 1rem)
+      config.threshold = 0; // When using offset, trigger at top
+      config.unit = 'rem';
+      return config;
+    }
+    
+    // Parse pixel values (e.g., "100px", "250px")
+    const pixelMatch = value.match(/^(\d+(?:\.\d+)?)px$/);
+    if (pixelMatch) {
+      const pixelValue = parseFloat(pixelMatch[1]);
+      config.offset = pixelValue;
+      config.threshold = 0; // When using offset, trigger at top
+      config.unit = 'px';
+      return config;
+    }
+    
+    // Parse viewport height values (e.g., "20vh", "30vh")
+    const vhMatch = value.match(/^(\d+(?:\.\d+)?)vh$/);
+    if (vhMatch) {
+      const vhValue = parseFloat(vhMatch[1]);
+      config.threshold = vhValue / 100;
+      config.unit = 'vh';
+      return config;
+    }
+    
+    // If none match, return default
     return config;
   }
   
