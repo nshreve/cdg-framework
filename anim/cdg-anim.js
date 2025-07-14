@@ -47,39 +47,40 @@ $('[data-cdg-text-split]').each(function() {
 
   //Stagger Animations
 $('[data-cdg-anim-stagger]').each(function() {
-let element = $(this);
-let staggerDelay;
- // Check if data-cdg-anim-stagger has a value
-let attributeValue = element.attr('data-cdg-anim-stagger');
+  let element = $(this);
+  let staggerDelay;
+  
+  // Check if data-cdg-anim-stagger has a value
+  let attributeValue = element.attr('data-cdg-anim-stagger');
 
-if (attributeValue && attributeValue.trim() !== '') {
-  // Use the attribute value as stagger amount
-  staggerDelay = parseFloat(attributeValue.trim());
-} else {
-  const staggerValue = getComputedStyle(this).getPropertyValue('--_animations---stagger').trim();
-  staggerDelay = parseFloat(staggerValue);
-}
+  if (attributeValue && attributeValue.trim() !== '') {
+    // Use the attribute value as stagger amount
+    staggerDelay = parseFloat(attributeValue.trim());
+  } else {
+    const staggerValue = getComputedStyle(this).getPropertyValue('--_animations---stagger').trim();
+    // Use 0.2s as default if CSS property doesn't exist or is empty
+    staggerDelay = staggerValue && staggerValue !== '' ? parseFloat(staggerValue) : 0.2;
+  }
 
-let delayIndex = 0;
+  let delayIndex = 0;
 
-element.children().each(function() {
-  if (this.tagName.toLowerCase() === 'span') {
-    // For spans, find all divs inside and apply delays to those
-    $(this).find('div').each(function() {
+  element.children().each(function() {
+    if (this.tagName.toLowerCase() === 'span') {
+      // For spans, find all divs inside and apply delays to those
+      $(this).find('div').each(function() {
+        const delay = delayIndex * staggerDelay;
+        this.style.setProperty('animation-delay', `${delay}s`, 'important');
+        delayIndex++;
+      });
+    } else {
+      // For non-span children, apply delay directly
       const delay = delayIndex * staggerDelay;
       this.style.setProperty('animation-delay', `${delay}s`, 'important');
       delayIndex++;
-    });
-  } else {
-    // For non-span children, apply delay directly
-    const delay = delayIndex * staggerDelay;
-    this.style.setProperty('animation-delay', `${delay}s`, 'important');
-    delayIndex++;
-  }
+    }
+  });
 });
 
-
- });
 
 
 
