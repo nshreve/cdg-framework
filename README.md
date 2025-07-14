@@ -6,36 +6,36 @@ The CDG Framework is a set of components and systems used by CDG. Built by Noah 
 #### CSS (In `<head>`)
 ```
 <!-- CDG ANIM CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.0/anim/cdg-anim.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.1/anim/cdg-anim.min.css">
 ```
 #### JS (Before `</body>`)
 ```
 <!-- CDG ANIM JS -->
-<script src="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.0/anim/cdg-anim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.1/anim/cdg-anim.min.js"></script>
 ```
 
 ## [CDG Marquee](marquee)
 #### CSS (In `<head>`)
 ```
 <!-- CDG MARQUEE CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.0/marquee/cdg-marquee.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.1/marquee/cdg-marquee.min.css">
 ```
 #### JS (Before `</body>`)
 ```
 <!-- CDG MARQUEE JS -->
-<script src="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.0/marquee/cdg-marquee.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.1/marquee/cdg-marquee.min.js"></script>
 ```
 
 ## [CDG Accordion](accordion)
 #### CSS (In `<head>`)
 ```
 <!-- CDG ACCORDION CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.0/accordion/cdg-accordion.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.1/accordion/cdg-accordion.min.css">
 ```
 
 ## [CDG Count Up](countup)
 #### JS (Before `</body>`)
 ```
 <!-- CDG Count Up JS -->
-<script src="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.0/countup/cdg-countup.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/nshreve/cdg-framework@v1.1.1/countup/cdg-countup.min.js"></script>
 ```
