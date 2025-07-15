@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-  // Text Split Animation with GSAP SplitText
+  // Text Split Animation with CDG Text Split
 $('[data-cdg-text-split]').each(function() {
   let element = $(this);
 
@@ -20,25 +20,28 @@ $('[data-cdg-text-split]').each(function() {
     // Remove the animation class from the original element
     element.removeClass(animClass);
 
-    // Create GSAP SplitText instance
-    const splitText = new SplitText(this, {
+    // Create CDG Text Split instance
+    const textSplit = new CDGTextSplit(this, {
       type: splitType,
       charsClass: "char",
-      wordsClass: "word",
+      wordsClass: "word", 
       linesClass: "line",
       smartWrap: true
     });
 
+    // Split the text
+    textSplit.split();
+
     // Add the animation class to the split elements
     if (splitType.includes('chars')) {
       // If 'chars' is included, only apply animation to chars
-      $(splitText.chars).addClass(animClass);
+      $(textSplit.chars).addClass(animClass);
     } else if (splitType.includes('words')) {
       // If no 'chars' but has 'words', apply to words
-      $(splitText.words).addClass(animClass);
+      $(textSplit.words).addClass(animClass);
     } else if (splitType.includes('lines')) {
       // If neither 'chars' nor 'words', but has 'lines', apply to lines
-      $(splitText.lines).addClass(animClass);
+      $(textSplit.lines).addClass(animClass);
     }
   }
 });
