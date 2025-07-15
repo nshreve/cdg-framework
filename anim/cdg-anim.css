@@ -2,5 +2,9 @@
 [data-cdg-anim-inview],
 [data-cdg-anim-inview] * {
     animation-play-state: paused !important;
+}
+
+[data-cdg-anim-inview] [class*="anim-"],
+[data-cdg-anim-inview][class*="anim-"] {
     opacity: 0 !important;
 }
