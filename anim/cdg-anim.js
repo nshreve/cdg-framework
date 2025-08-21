@@ -64,21 +64,14 @@ $('[data-cdg-anim-stagger]').each(function() {
 
   let delayIndex = 0;
 
-  element.children().each(function() {
-    if (this.tagName.toLowerCase() === 'span') {
-      // For spans, find all divs inside and apply delays to those
-      $(this).find('div').each(function() {
-        const delay = delayIndex * staggerDelay;
-        this.style.setProperty('animation-delay', `${delay}s`, 'important');
-        delayIndex++;
-      });
-    } else {
-      // For non-span children, apply delay directly
-      const delay = delayIndex * staggerDelay;
-      this.style.setProperty('animation-delay', `${delay}s`, 'important');
-      delayIndex++;
-    }
-  });
+  element.find('*').filter(function() {
+    return Array.from(this.classList).some(className => className.startsWith('anim-'));
+}).each(function() {
+    const delay = delayIndex * staggerDelay;
+    this.style.setProperty('animation-delay', `${delay}s`, 'important');
+    delayIndex++;
+});
+
 });
 
 
